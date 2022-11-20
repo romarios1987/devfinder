@@ -1,20 +1,28 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import styles from './Switcher.module.scss'
 import { ReactComponent as MoonIcon } from 'assets/icon-moon.svg'
 import { ReactComponent as SunIcon } from 'assets/icon-sun.svg'
+import useLocalStorage from 'hooks/useLocalStorage'
 
 const Switcher = () => {
-	const [isDark, setDark] = useState(false)
+	const defaultDark = window.matchMedia('(prefers-color-scheme: dark)').matches
 
-	const themeText = isDark ? 'Light' : 'Dark'
-	const ThemeIcon = isDark ? SunIcon : MoonIcon
+	const [theme, setTheme] = useLocalStorage(
+		'theme',
+		defaultDark ? 'dark' : 'light'
+	)
+
+	const themeText = theme === 'dark' ? 'Light' : 'Dark'
+	const ThemeIcon = theme === 'dark' ? SunIcon : MoonIcon
 
 	useEffect(() => {
-		document.body.setAttribute('data-theme', isDark ? 'dark' : 'light')
-	}, [isDark])
+		document.body.setAttribute('data-theme', theme)
+	}, [theme])
 
 	return (
-		<div className={styles.switcher} onClick={() => setDark(!isDark)}>
+		<div
+			className={styles.switcher}
+			onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}>
 			<span>{themeText}</span>
 			<ThemeIcon className={styles.icon} />
 		</div>
