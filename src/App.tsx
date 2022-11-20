@@ -1,8 +1,16 @@
+import Container from 'components/Container'
+import Header from 'components/Header'
+import Search from 'components/Search'
+
 function App() {
+	const fetchUser = (username: string) => {
+		console.log(username)
+	}
 	return (
-		<div className='App'>
-			<h1>DevFinder</h1>
-		</div>
+		<Container>
+			<Header />
+			<Search hasError onSubmit={fetchUser} />
+		</Container>
 	)
 }
 
