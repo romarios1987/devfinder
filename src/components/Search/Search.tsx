@@ -8,17 +8,20 @@ interface SearchProps {
 	onSubmit: (text: string) => void
 }
 
+type FormFields = {
+	username: HTMLInputElement
+}
+
 const Search = ({ hasError, onSubmit }: SearchProps) => {
 	const searchRef = useRef<HTMLInputElement | null>(null)
 
-	const handleSubmit = (event: React.FormEvent) => {
-		event.preventDefault()
+	const handleSubmit = (e: React.FormEvent<HTMLFormElement & FormFields>) => {
+		e.preventDefault()
+		const text = e.currentTarget.username.value
 
-		const text = searchRef.current?.value || ''
-
-		if (text) {
+		if (text.trim()) {
 			onSubmit(text)
-			if (searchRef.current) searchRef.current.value = ''
+			e.currentTarget.reset()
 		}
 	}
 
